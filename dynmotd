@@ -1,0 +1,87 @@
+<?php
+
+exec("system_profiler SPFirewallDataType SPPowerDataType SPNetworkDataType SPSoftwareDataType 2>/dev/null", $systemvars);
+
+$tree = array();
+foreach($systemvars as $var){
+
+  if(preg_match("`^(\s+)(.*):\s+(.*)$`", $var, $match)){
+		$variable = $match[2];
+		$value = $match[3];
+
+		\${str_replace(array(" ", "-", "(", ")"), "_", strtoupper( $active_submodule." ".$variable ))} = $value;
+
+		//$tree[$active_module][$active_submodule][$variable] = $value;
+
+	}
+	else if(preg_match("`^(\s+)(.*):$`", $var, $match)){
+		if(!empty($match[2])){
+			$active_submodule = $match[2];
+		}
+
+		$tree[$active_module][$active_submodule] = array();
+	}
+	else{
+		preg_match("`^(.*)$`", $var, $match);
+		$tree[$match[1]] = array();
+		
+		if(!empty($match[1])){
+			$active_module = $match[1];
+		}
+	}
+}
+
+$bp = ($CHARGE_INFORMATION_FULL_CHARGE_CAPACITY__MAH_/$CHARGE_INFORMATION_CHARGE_REMAINING__MAH_)*100;
+
+
+$content = <<<CONTENTS
+#!/bin/bash
+NONE="\033[0m"  # unsets color to term's fg color
+
+K="\033[0;30m"  # black
+R="\033[0;31m"  # red
+G="\033[0;32m"  # green
+Y="\033[0;33m"  # yellow
+B="\033[0;34m"  # blue
+M="\033[0;35m"  # magenta
+C="\033[0;36m"  # cyan
+W="\033[0;37m"  # white
+
+# emphasized (bolded) colors
+EMK="\033[1;30m"
+EMR="\033[1;31m"
+EMG="\033[1;32m"
+EMY="\033[1;33m"
+EMB="\033[1;34m"
+EMM="\033[1;35m"
+EMC="\033[1;36m"
+EMW="\033[1;37m"
+
+
+echo -e " \${EMG} -- \${W} Hackintosh OS X \${EMG}--\${NONE}"
+echo -e "    $SYSTEM_SOFTWARE_OVERVIEW_SYSTEM_VERSION "
+
+echo -e ""
+echo -e "\${EMW}Network:\${NONE}"
+echo -e "\${EMG}Hostname\${W}: \${C}$SYSTEM_SOFTWARE_OVERVIEW_COMPUTER_NAME\${NONE}"
+echo -e "\${EMG}Addresses\${W}: \${C}$IPV4_ADDRESSES\${NONE}"
+echo -e "\${EMG}Next-Hop\${W}: \${C}$IPV4_ROUTER\${NONE}"
+echo -e "\${EMG}DNS Servers\${W}: \${C}$DNS_SERVER_ADDRESSES\${NONE}"
+echo -e "\${EMG}$WI_FI_BSD_DEVICE_NAME\${W}: \${C}$WI_FI_IPV4_ADDRESSES\${NONE}"
+echo -e "\${EMG}Firewall\${W}: \${C}$FIREWALL_SETTINGS_MODE\${NONE}"
+
+echo -e ""
+echo -e "\${EMW}System:\${NONE}"
+echo -e "\${EMG}Uptime\${W}: \${C}$SYSTEM_SOFTWARE_OVERVIEW_TIME_SINCE_BOOT\${NONE}"
+echo -e "\${EMG}Processor\${W}: \${C}$(sysctl -a | grep "machdep.cpu.brand_string:" | cut -d':' -f2)\${NONE}"
+
+echo -e ""
+echo -e "\${EMW}Battery:\${NONE}"
+echo -e "\${EMG}Charging\${W}: \${C}$AC_CHARGER_INFORMATION_CHARGING\${NONE}"
+echo -e "\${EMG}Percentage\${W}: \${C}$bp%\${NONE}"
+exit
+CONTENTS;
+
+//echo -e "\${EMG}Total Memory\${W}: \${C}$(sysctrl -a | awk '/Memory:/ {print $10}')\${NONE}"
+
+echo $content;
