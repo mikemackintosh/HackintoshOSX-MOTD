@@ -3,6 +3,18 @@ HackintoshOSX-MOTD
 
 Hackintosh OSX Message of the Day
 
+## To Install
+
+To install this script, there are two major steps that need to be completed:
+  
+  1. Copy `dynmotd` to `/etc` 
+  
+  2. Edit `/etc/profile` and at the end of `/etc/profile` add: `php -f /etc/dynmotd | bash`
+
+When you open a new terminal, the new motd will be displayed.
+
+**Note:** Editing `/etc/profile` required root privileges.
+  
 ## Next-Gen Message of the Day
 
 The `dynmotd` script outputs a bash file that looks like the following when executed. It supports colors and variables, and parses the output of `system_profiler SPFirewallDataType SPPowerDataType SPNetworkDataType SPSoftwareDataType` to obtain system pertinent information and stored it into flattened variables.
@@ -27,16 +39,8 @@ The `dynmotd` script outputs a bash file that looks like the following when exec
     Percentage: 87.03823807594%
     Splugs-MacBook-Pro:~ splug$
 
-## To Install
+  ![Example](http://www.highonphp.com/v3/wp-content/uploads/2013/06/Screen-Shot-2013-06-18-at-10.56.35-AM.png)
   
-  1. Copy `dynmotd` to `/etc` 
-  
-  2. Edit `/etc/profile`
 
-  3. At the end of `/etc/profile` add: `php -f /etc/dynmotd | bash`
-
-  4. Save file
-  
-  5. Open new terminal window
   
   
