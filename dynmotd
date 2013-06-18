@@ -9,10 +9,8 @@ foreach($systemvars as $var){
 		$variable = $match[2];
 		$value = $match[3];
 
-		\${str_replace(array(" ", "-", "(", ")"), "_", strtoupper( $active_submodule." ".$variable ))} = $value;
-
-		//$tree[$active_module][$active_submodule][$variable] = $value;
-
+		${str_replace(array(" ", "-", ".", "(", ")"), "_", strtoupper( $active_submodule." ".$variable ))} = $value;
+		
 	}
 	else if(preg_match("`^(\s+)(.*):$`", $var, $match)){
 		if(!empty($match[2])){
