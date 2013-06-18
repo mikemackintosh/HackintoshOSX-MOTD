@@ -26,3 +26,17 @@ The `dynmotd` script outputs a bash file that looks like the following when exec
     Charging: No
     Percentage: 87.03823807594%
     Splugs-MacBook-Pro:~ splug$
+
+## To Install
+  
+  1. Copy `dynmotd` to `/etc` 
+  
+  2. Edit `/etc/profile`
+
+  3. At the end of `/etc/profile` add: `php -f /etc/dynmotd | bash`
+
+  4. Save file
+  
+  5. Open new terminal window
+  
+  
