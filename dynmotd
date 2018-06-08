@@ -28,9 +28,12 @@ foreach($systemvars as $var){
 		}
 	}
 }
-
-$bp = round(($CHARGE_INFORMATION_CHARGE_REMAINING__MAH_/$CHARGE_INFORMATION_FULL_CHARGE_CAPACITY__MAH_)*100, 2);
-
+if ($CHARGE_INFORMATION_FULL_CHARGE_CAPACITY__MAH_ != 0){
+	$bp = round(($CHARGE_INFORMATION_CHARGE_REMAINING__MAH_/$CHARGE_INFORMATION_FULL_CHARGE_CAPACITY__MAH_)*100, 2);
+}
+else{
+	$bp = "";
+}
 
 $content = <<<CONTENTS
 #!/bin/bash
@@ -74,9 +77,18 @@ echo -e "\${EMG}Uptime\${W}: \${C}$SYSTEM_SOFTWARE_OVERVIEW_TIME_SINCE_BOOT\${NO
 echo -e "\${EMG}Processor\${W}: \${C}$(sysctl -a | grep "machdep.cpu.brand_string:" | cut -d':' -f2)\${NONE}"
 
 echo -e ""
-echo -e "\${EMW}Battery:\${NONE}"
-echo -e "\${EMG}Charging\${W}: \${C}$AC_CHARGER_INFORMATION_CHARGING\${NONE}"
-echo -e "\${EMG}Percentage\${W}: \${C}$bp%\${NONE}"
+if [ "$AC_CHARGER_INFORMATION_CHARGING" != "" ] || [ "$bp" != "" ]
+then
+	echo -e "\${EMW}Battery:\${NONE}"
+	if [ "$AC_CHARGER_INFORMATION_CHARGING" != "" ]
+	then
+		echo -e "\${EMG}Charging\${W}: \${C}$AC_CHARGER_INFORMATION_CHARGING\${NONE}"
+	fi
+	if [ "$bp" != "" ]
+	then
+		echo -e "\${EMG}Percentage\${W}: \${C}$bp%\${NONE}"
+	fi
+fi
 exit
 CONTENTS;
 
