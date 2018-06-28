@@ -13,8 +13,8 @@ To install this script, there are two major steps that need to be completed:
 
 When you open a new terminal, the new motd will be displayed.
 
-**Note:** Editing `/etc/profile` required root privileges.
-  
+**Note:** You can also move `dynmotd` to somewhere else on your path if you want.  Editing `/etc/profile` requires root privileges, but you can also add the line to `~/.bash_profile` replacing `/etc/dynmotd` with the path to `dynmotd`.  
+
 ## Next-Gen Message of the Day
 
 The `dynmotd` script outputs a bash file that looks like the following when executed. It supports colors and variables, and parses the output of `system_profiler SPFirewallDataType SPPowerDataType SPNetworkDataType SPSoftwareDataType` to obtain system pertinent information and stored it into flattened variables.
@@ -38,8 +38,24 @@ The `dynmotd` script outputs a bash file that looks like the following when exec
     Charging: No
     Percentage: 87.03823807594%
     Splugs-MacBook-Pro:~ splug$
+If you're on a desktop, you might see something like:
 
-  ![Example](http://www.highonphp.com/v3/wp-content/uploads/2013/06/Screen-Shot-2013-06-18-at-10.56.35-AM.png)
+      --  Hackintosh OS X --
+        macOS 10.13.5 (17F77)
+    
+    Network:
+    Hostname: Mac Mini
+    Addresses: 192.0.2.15
+    Next-Hop: 192.0.2.5
+    DNS Servers: 8.8.8.8, 8.8.4.4
+    en1: 192.0.2.15
+    Firewall: Allow all incoming connections
+
+    System:
+    Uptime: 12 days 56 minutes
+    Processor:  Intel(R) Core(TM) i5-3210M CPU @ 2.50GHz
+    
+<!--  ![Example](http://www.highonphp.com/v3/wp-content/uploads/2013/06/Screen-Shot-2013-06-18-at-10.56.35-AM.png)-->
   
 
   
